@@ -1,3 +1,7 @@
+import '../src/index.css';
+import '../src/cards.js';
+import {initialCards} from './cards.js';
+
 const placesList = document.querySelector('.places__list');
 
 const addCard = (card) => {

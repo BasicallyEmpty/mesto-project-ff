@@ -24,4 +24,4 @@ const closePopup = el => {
   document.removeEventListener('mousedown', clickHandler);
 }
 
-export {openPopup, closePopup}
+export { openPopup, closePopup }

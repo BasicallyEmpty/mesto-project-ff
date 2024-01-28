@@ -1,7 +1,7 @@
 import '../src/index.css';
-import {initialCards} from './components/cards.js';
-import {createCard, addCard, deleteCard, initializeCards} from './components/card.js';
-import {openPopup, closePopup} from './components/modal.js';
+import { initialCards } from './components/cards.js';
+import { createCard, addCard, deleteCard, initializeCards } from './components/card.js';
+import { openPopup, closePopup } from './components/modal.js';
 
 const editBtn = document.querySelector('.profile__edit-button');
 const addBtn = document.querySelector('.profile__add-button');
@@ -22,7 +22,7 @@ editBtn.addEventListener('click', () => {
   openPopup(popupTypeEdit);
   nameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
-});
+})
 
 addBtn.addEventListener('click', () => {
   formNew.reset();
@@ -31,9 +31,9 @@ addBtn.addEventListener('click', () => {
 
 closePopupBtns.forEach((item) => {
   item.addEventListener('click', evt => {
-    closePopup(evt.target.closest('.popup'));
-  });
-});
+    closePopup(evt.target.closest('.popup'))
+  })
+})
 
 const formEditSubmitHandler = evt => {
   evt.preventDefault();
@@ -44,12 +44,12 @@ const formEditSubmitHandler = evt => {
 
 const formNewSubmitHandler = evt => {
   evt.preventDefault();
-  addCard(createCard(placeName.value, placeLink.value, deleteCard));
+  addCard(createCard(placeName.value, placeLink.value));
   closePopup(popupTypeNew);
   formNew.reset();
 }
 
-formEdit.addEventListener('submit', formEditSubmitHandler);
-formNew.addEventListener('submit', formNewSubmitHandler);
+formEdit.addEventListener('submit', formEditSubmitHandler)
+formNew.addEventListener('submit', formNewSubmitHandler)
 
-initializeCards(initialCards);
+initializeCards(initialCards)

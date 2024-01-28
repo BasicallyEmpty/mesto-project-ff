@@ -9,8 +9,8 @@ const likeCard = evt => {
   eventTarget.classList.toggle('card__like-button_is-active');
 }
 
-const deleteCard = evt => {
-  evt.target.closest('.card').remove();
+const deleteCard = el => {
+  el.remove();
 }
 
 const createCard = (name, link, deleteCallback, likeCallback, showImgCallback) => {
@@ -25,9 +25,9 @@ const createCard = (name, link, deleteCallback, likeCallback, showImgCallback) =
   cardImg.src = link;
   cardImg.alt = name;
 
-  cardImg.addEventListener('click', showImgCallback);
+  cardImg.addEventListener('click', () => showImgCallback(cardTitle.textContent, cardImg.src));
   likeBtn.addEventListener('click', likeCallback);
-  deleteBtn.addEventListener('click', deleteCallback);
+  deleteBtn.addEventListener('click', () => deleteCallback(cardElement));
 
   return cardElement;
 }

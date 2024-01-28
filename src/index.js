@@ -1,7 +1,7 @@
 import '../src/index.css';
 import { initialCards } from './components/cards.js';
-import { createCard, addCard, deleteCard, initializeCards } from './components/card.js';
-import { openPopup, closePopup } from './components/modal.js';
+import { createCard, addCard, deleteCard, likeCard } from './components/card.js';
+import { openPopup, closePopup, showImg } from './components/modal.js';
 
 const editBtn = document.querySelector('.profile__edit-button');
 const addBtn = document.querySelector('.profile__add-button');
@@ -16,6 +16,12 @@ const descriptionInput = formEdit.elements.description;
 const formNew = document.forms['new-place'];
 const placeName = formNew.elements['place-name'];
 const placeLink = formNew.elements.link;
+
+const initializeCards = arr => {
+  arr.forEach(el => {
+    addCard((createCard(el.name, el.link, deleteCard, likeCard, showImg)))
+  })
+}
 
 
 editBtn.addEventListener('click', () => {
@@ -44,7 +50,7 @@ const formEditSubmitHandler = evt => {
 
 const formNewSubmitHandler = evt => {
   evt.preventDefault();
-  addCard(createCard(placeName.value, placeLink.value));
+  addCard(createCard(placeName.value, placeLink.value, deleteCard, likeCard, showImg));
   closePopup(popupTypeNew);
   formNew.reset();
 }

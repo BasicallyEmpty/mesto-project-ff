@@ -9,11 +9,11 @@ const likeCard = evt => {
   eventTarget.classList.toggle('card__like-button_is-active');
 }
 
-const deleteCard = btn => {
-  btn.target.closest('.card').remove();
+const deleteCard = evt => {
+  evt.target.closest('.card').remove();
 }
 
-const createCard = (name, link) => {
+const createCard = (name, link, deleteCallback, likeCallback, showImgCallback) => {
   const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImg = cardElement.querySelector('.card__image');
@@ -25,16 +25,11 @@ const createCard = (name, link) => {
   cardImg.src = link;
   cardImg.alt = name;
 
-  likeBtn.addEventListener('click', likeCard);
-  deleteBtn.addEventListener('click', deleteCard);
+  cardImg.addEventListener('click', showImgCallback);
+  likeBtn.addEventListener('click', likeCallback);
+  deleteBtn.addEventListener('click', deleteCallback);
 
   return cardElement;
 }
 
-const initializeCards = arr => {
-  arr.forEach(el => {
-    addCard((createCard(el.name, el.link, deleteCard)))
-  })
-}
-
-export { createCard, addCard, deleteCard, initializeCards }
+export { createCard, addCard, deleteCard, likeCard }

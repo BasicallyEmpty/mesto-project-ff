@@ -1,8 +1,14 @@
+const removeListeners = () => {
+  document.removeEventListener('keydown', keyHandler);
+  document.removeEventListener('mousedown', clickHandler);
+}
+
 const keyHandler = evt => {
   const activePopup = document.querySelector('.popup_is-opened');
   if (evt.key === 'Escape') {
     closePopup(activePopup)
   }
+  removeListeners();
 }
 
 const clickHandler = evt => {
@@ -10,18 +16,15 @@ const clickHandler = evt => {
   if (!evt.target.closest('.popup__content')) {
     closePopup(activePopup)
   }
+  removeListeners();
 }
 
 const openPopup = el => {
   el.classList.add('popup_is-opened');
-  document.addEventListener('keydown', keyHandler);
-  document.addEventListener('mousedown', clickHandler);
 }
 
 const closePopup = el => {
   el.classList.remove('popup_is-opened');
-  document.removeEventListener('keydown', keyHandler);
-  document.removeEventListener('mousedown', clickHandler);
 }
 
-export { openPopup, closePopup }
+export { openPopup, closePopup, keyHandler, clickHandler }

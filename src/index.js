@@ -1,7 +1,7 @@
 import '../src/index.css';
 import { initialCards } from './components/cards.js';
 import { createCard, addCard, deleteCard, likeCard } from './components/card.js';
-import { openPopup, closePopup } from './components/modal.js';
+import { openPopup, closePopup, keyHandler, clickHandler } from './components/modal.js';
 
 const editBtn = document.querySelector('.profile__edit-button');
 const addBtn = document.querySelector('.profile__add-button');
@@ -20,15 +20,22 @@ const formNew = document.forms['new-place'];
 const placeName = formNew.elements['place-name'];
 const placeLink = formNew.elements.link;
 
+const addListeners = () => {
+  document.addEventListener('keydown', keyHandler);
+  document.addEventListener('mousedown', clickHandler);
+}
+
 editBtn.addEventListener('click', () => {
   openPopup(popupTypeEdit);
   nameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
+  addListeners();
 })
 
 addBtn.addEventListener('click', () => {
   formNew.reset();
   openPopup(popupTypeNew);
+  addListeners();
 })
 
 closePopupBtns.forEach((item) => {
@@ -61,6 +68,7 @@ const showImg = evt => {
   popupCaption.textContent = cardTitle.textContent;
 
   openPopup(popupTypeImage);
+  addListeners();
 }
 
 const initializeCards = arr => {

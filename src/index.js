@@ -44,6 +44,13 @@ const formEditSubmitHandler = evt => {
   closePopup(popupTypeEdit);
 }
 
+const formNewSubmitHandler = evt => {
+  evt.preventDefault();
+  addCard(createCard(placeName.value, placeLink.value, deleteCard, likeCard, showImg));
+  closePopup(popupTypeNew);
+  formNew.reset();
+}
+
 const showImg = evt => {
   const card = evt.target.closest('.card');
   const cardImg = card.querySelector('.card__image');
@@ -54,13 +61,6 @@ const showImg = evt => {
   popupCaption.textContent = cardTitle.textContent;
 
   openPopup(popupTypeImage);
-}
-
-const formNewSubmitHandler = evt => {
-  evt.preventDefault();
-  addCard(createCard(placeName.value, placeLink.value, deleteCard, likeCard, showImg));
-  closePopup(popupTypeNew);
-  formNew.reset();
 }
 
 const initializeCards = arr => {

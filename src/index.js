@@ -1,37 +1,26 @@
 import '../src/index.css';
-import '../src/cards.js';
-import {initialCards} from './cards.js';
+import {initialCards} from './components/cards.js';
+import {createCard, initializeCards} from './components/card.js';
+import {openPopup, closePopup} from './components/modal.js';
 
-const placesList = document.querySelector('.places__list');
+const editBtn = document.querySelector('.profile__edit-button');
+const addBtn = document.querySelector('.profile__add-button');
+const closePopupBtns = document.querySelectorAll('.popup__close');
+const popupTypeEdit = document.querySelector('.popup_type_edit');
+const popupTypeNew = document.querySelector('.popup_type_new-card');  
 
-const addCard = (card) => {
-  placesList.append(card);
-}
+editBtn.addEventListener('click', () => {
+  openPopup(popupTypeEdit);
+});
 
-const deleteCard = btn => {
-  btn.target.closest('.card').remove();
-}
+addBtn.addEventListener('click', () => {
+  openPopup(popupTypeNew);
+})
 
-const createCard = (card, delCallback) => {
-  const cardTemplate = document.querySelector('#card-template').content;
-  const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
-  const cardImg = cardElement.querySelector('.card__image');
-  const cardTitle = cardElement.querySelector('.card__title');
-  const deleteBtn = cardElement.querySelector('.card__delete-button');
-
-  cardTitle.textContent = card.name;
-  cardImg.src = card.link;
-  cardImg.alt = card.name;
-
-  deleteBtn.addEventListener('click', delCallback);
-
-  return cardElement;
-}
-
-const initializeCards = arr => {
-  arr.forEach(el => {
-    addCard((createCard(el, deleteCard)))
+closePopupBtns.forEach((item) => {
+  item.addEventListener('click', evt => {
+    closePopup(evt.target.closest('.popup'));
   });
-}
+});
 
 initializeCards(initialCards);

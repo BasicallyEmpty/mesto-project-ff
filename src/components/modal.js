@@ -7,16 +7,16 @@ const keyHandler = evt => {
   const activePopup = document.querySelector('.popup_is-opened');
   if (evt.key === 'Escape') {
     closePopup(activePopup)
+    removeListeners();
   }
-  removeListeners();
 }
 
 const clickHandler = evt => {
   const activePopup = document.querySelector('.popup_is-opened');
   if (!evt.target.closest('.popup__content')) {
     closePopup(activePopup)
+    removeListeners();
   }
-  removeListeners();
 }
 
 const openPopup = el => {

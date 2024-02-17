@@ -1,28 +1,25 @@
 import '../src/index.css';
-import { editBtn, addBtn, popups, popupTypeEdit, popupTypeNew, popupTypeImage, popupImage, popupCaption, profileName, profileDescription, formEdit, nameInput, descriptionInput, formNew, placeName, placeLink } from './components/constants.js';
+import { config, editBtn, addBtn, popups, popupTypeEdit, popupTypeNew, popupTypeImage, popupImage, popupCaption, profileName, profileDescription, formEdit, nameInput, descriptionInput, formNew, placeName, placeLink } from './components/constants.js';
 import { initialCards } from './components/cards.js';
 import { createCard, addCard, deleteCard, likeCard } from './components/card.js';
-import { openPopup, closePopup } from './components/modal.js';
-
-
+import { openPopup, closePopup, clickHandler } from './components/modal.js';
+import { enableValidation, clearValidation } from './components/validation.js';
 
 editBtn.addEventListener('click', () => {
+  clearValidation(formEdit, config);
   openPopup(popupTypeEdit);
   nameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
 })
 
 addBtn.addEventListener('click', () => {
+  clearValidation(formNew, config);
   formNew.reset();
   openPopup(popupTypeNew);
 })
 
 popups.forEach(popup => {
-  popup.addEventListener('click', evt => {
-    if (evt.target === evt.currentTarget || evt.target.classList.contains('popup__close')) {
-      closePopup(popup);
-    }
-  })
+  popup.addEventListener('click', (evt) => clickHandler(evt, popup))
 })
 
 const formEditSubmitHandler = evt => {
@@ -53,7 +50,9 @@ const initializeCards = arr => {
   })
 }
 
-formEdit.addEventListener('submit', formEditSubmitHandler)
-formNew.addEventListener('submit', formNewSubmitHandler)
+formEdit.addEventListener('submit', formEditSubmitHandler);
+formNew.addEventListener('submit', formNewSubmitHandler);
 
-initializeCards(initialCards)
+initializeCards(initialCards);
+
+enableValidation(config);

@@ -14,3 +14,12 @@ export const descriptionInput = formEdit.elements.description;
 export const formNew = document.forms['new-place'];
 export const placeName = formNew.elements['place-name'];
 export const placeLink = formNew.elements.link;
+
+export const config = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+}

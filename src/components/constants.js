@@ -6,6 +6,7 @@ export const popupTypeNew = document.querySelector('.popup_type_new-card');
 export const popupTypeImage = document.querySelector('.popup_type_image');
 export const popupImage = document.querySelector('.popup__image');
 export const popupCaption = document.querySelector('.popup__caption');
+export const profileImage = document.querySelector('.profile__image');
 export const profileName = document.querySelector('.profile__title');
 export const profileDescription = document.querySelector('.profile__description');
 export const formEdit = document.forms['edit-profile'];

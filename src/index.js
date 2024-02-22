@@ -1,6 +1,6 @@
 import '../src/index.css';
-import { requestUserInfo, requestCards } from './components/api.js';
-import { config, editBtn, addBtn, popups, popupTypeEdit, popupTypeNew, popupTypeImage, popupImage, popupCaption, profileImage, profileName, profileDescription, formEdit, nameInput, descriptionInput, formNew, placeName, placeLink } from './components/constants.js';
+import { requestUserInfo, requestCards, updateProfile, postCard, updateAvatar } from './components/api.js';
+import { config, editBtn, addBtn, popups, popupTypeEdit, popupTypeNew, popupTypeImage, popupImage, popupTypeUpdateAvatar, popupCaption, profileImage, profileName, profileDescription, formEdit, nameInput, descriptionInput, formNew, placeName, placeLink, formUpdateAvatar, avatarLink } from './components/constants.js';
 import { createCard, addCard, deleteCard, likeCard } from './components/card.js';
 import { openPopup, closePopup, clickHandler } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
@@ -16,26 +16,83 @@ editBtn.addEventListener('click', () => {
 
 addBtn.addEventListener('click', () => {
   clearValidation(formNew, config);
-  formNew.reset();
   openPopup(popupTypeNew);
+})
+
+profileImage.addEventListener('click', () => {
+  clearValidation(formUpdateAvatar, config);
+  openPopup(popupTypeUpdateAvatar);
 })
 
 popups.forEach(popup => {
   popup.addEventListener('click', (evt) => clickHandler(evt, popup))
 })
 
+function renderLoading(isLoading, evt) {
+  const button = evt.target.closest('form').querySelector('button');
+  if (isLoading) {
+    button.textContent = 'Сохранение...';
+  } else {
+    button.textContent = 'Сохранить';
+  }
+}
+
 const formEditSubmitHandler = evt => {
   evt.preventDefault();
-  profileName.textContent = nameInput.value;
-  profileDescription.textContent = descriptionInput.value;
-  closePopup(popupTypeEdit);
+  renderLoading(true, evt);
+  const name = nameInput.value;
+  const description = descriptionInput.value;
+  updateProfile(name, description)
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject();
+      }
+    })
+    .then(res => setUserInfo(res))
+    .then(() => closePopup(popupTypeEdit))
+    .catch(err => console.log(`Не удалось обновить данные профиля: ${err}`))
+    .finally(() => renderLoading(false, evt));
 }
 
 const formNewSubmitHandler = evt => {
   evt.preventDefault();
-  addCard(createCard(placeName.value, placeLink.value, deleteCard, likeCard, showImg));
-  closePopup(popupTypeNew);
-  formNew.reset();
+  renderLoading(true, evt);
+  const name = placeName.value;
+  const link = placeLink.value;
+  postCard(name, link)
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject();
+      }
+    })
+    .then(card => addCard(createCard(card, deleteCard, likeCard, showImg)))
+    .then(() => closePopup(popupTypeNew))
+    .then(() => formNew.reset())
+    .catch(err => console.log(`Не удалось создать карточку: ${err}`))
+    .finally(() => renderLoading(false, evt));
+}
+
+const formUpdateAvatarSubmitHandler = evt => {
+  evt.preventDefault();
+  renderLoading(true, evt);
+  const link = avatarLink.value;
+  updateAvatar(link)
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject();
+      }
+    })
+    .then(res => setUserInfo(res))
+    .then(() => closePopup(popupTypeUpdateAvatar))
+    .then(() => formUpdateAvatar.reset())
+    .catch(err => console.log(`Не удалось обновить аватар: ${err}`))
+    .finally(() => renderLoading(false, evt));
 }
 
 const showImg = (name, link) => {
@@ -53,11 +110,10 @@ const setUserInfo = (info) => {
 }
 
 const initializeCards = cards => {
-  cards.forEach(el => {
-    addCard((createCard(el.name, el.link, deleteCard, likeCard, showImg)))
+  cards.forEach(card => {
+    addCard((createCard(card, deleteCard, likeCard, showImg)))
   })
 }
-
 
 const getUserInfo = new Promise((resolve, reject) => {
   requestUserInfo()
@@ -81,6 +137,7 @@ const getCards = new Promise((resolve, reject) => {
 
 formEdit.addEventListener('submit', formEditSubmitHandler);
 formNew.addEventListener('submit', formNewSubmitHandler);
+formUpdateAvatar.addEventListener('submit', formUpdateAvatarSubmitHandler);
 
 const promises = [getUserInfo, getCards];
 

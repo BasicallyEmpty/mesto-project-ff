@@ -13,7 +13,7 @@ const deleteCard = el => {
   el.remove();
 }
 
-const createCard = (name, link, deleteCallback, likeCallback, showImgCallback) => {
+const createCard = (cardInfo, deleteCallback, likeCallback, showImgCallback) => {
   const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImg = cardElement.querySelector('.card__image');
@@ -21,9 +21,9 @@ const createCard = (name, link, deleteCallback, likeCallback, showImgCallback) =
   const likeBtn = cardElement.querySelector('.card__like-button');
   const deleteBtn = cardElement.querySelector('.card__delete-button');
 
-  cardTitle.textContent = name;
-  cardImg.src = link;
-  cardImg.alt = name;
+  cardTitle.textContent = cardInfo.name;
+  cardImg.src = cardInfo.link;
+  cardImg.alt = cardInfo.name;
 
   cardImg.addEventListener('click', () => showImgCallback(cardTitle.textContent, cardImg.src));
   likeBtn.addEventListener('click', likeCallback);

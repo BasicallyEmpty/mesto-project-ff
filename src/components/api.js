@@ -17,3 +17,35 @@ export const requestCards = () => {
     headers: apiConfig.headers
   })
 }
+
+export const updateProfile = (name, description) => {
+  return fetch(`${apiConfig.baseUrl}/users/me`, {
+    method: 'PATCH',
+    headers: apiConfig.headers,
+    body: JSON.stringify({
+      name: name,
+      about: description
+    })
+  })
+}
+
+export const postCard = (name, link) => {
+  return fetch(`${apiConfig.baseUrl}/cards`, {
+    method: 'POST',
+    headers: apiConfig.headers,
+    body: JSON.stringify({
+      name: name,
+      link: link
+    })
+  })
+}
+
+export const updateAvatar = (link) => {
+  return fetch(`${apiConfig.baseUrl}/users/me/avatar`, {
+    method: 'PATCH',
+    headers: apiConfig.headers,
+    body: JSON.stringify({
+      avatar: link
+    })
+  })
+}

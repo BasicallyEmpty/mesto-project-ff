@@ -40,6 +40,13 @@ const postCard = (name, link) => {
   })
 }
 
+const removeCard = (cardId) => {
+  return fetch(`${apiConfig.baseUrl}/cards/${cardId}`, {
+    method: 'DELETE',
+    headers: apiConfig.headers
+  })
+}
+
 const updateAvatar = (link) => {
   return fetch(`${apiConfig.baseUrl}/users/me/avatar`, {
     method: 'PATCH',
@@ -64,4 +71,4 @@ const removeLike = (cardId) => {
   })
 }
 
-export { requestUserInfo, requestCards, updateProfile, postCard, updateAvatar, postLike, removeLike }
+export { requestUserInfo, requestCards, updateProfile, postCard, removeCard, updateAvatar, postLike, removeLike }

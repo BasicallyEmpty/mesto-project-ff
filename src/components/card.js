@@ -1,10 +1,10 @@
-import { postLike, removeLike } from "./api";
+import { removeCard, postLike, removeLike } from "./api";
 
 const placesList = document.querySelector('.places__list');
 
 const hasOwnLike = (cardInfo, userId) => {
   const likesArr = cardInfo.likes;
-  return likesArr.some(element => element._id == userId);
+  return likesArr.some(element => element._id === userId);
 }
 
 const likeCard = (evt, cardInfo) => {
@@ -51,8 +51,17 @@ const addCard = card => {
   placesList.prepend(card);
 }
 
-const deleteCard = el => {
-  el.remove();
+const deleteCard = (cardInfo, cardElement) => {
+  removeCard(cardInfo._id)
+    .then(res => {
+      if (res.ok) {
+        return Promise.resolve();
+      } else {
+        return Promise.reject();
+      }
+    })
+    .then(() => cardElement.remove())
+    .catch(err => console.log(`Не удалось удалить карточку: ${err}`))
 }
 
 const createCard = (cardInfo, deleteCallback, likeCallback, showImgCallback, userId) => {
@@ -71,7 +80,11 @@ const createCard = (cardInfo, deleteCallback, likeCallback, showImgCallback, use
 
   cardImg.addEventListener('click', () => showImgCallback(cardTitle.textContent, cardImg.src));
   likeBtn.addEventListener('click', (evt) => likeCallback(evt, cardInfo, userId));
-  deleteBtn.addEventListener('click', () => deleteCallback(cardElement));
+  deleteBtn.addEventListener('click', () => deleteCallback(cardInfo, cardElement));
+
+  if (cardInfo.owner._id !== userId) {
+    deleteBtn.remove();
+  }
 
   if (hasOwnLike(cardInfo, userId)) {
     likeBtn.classList.add('card__like-button_is-active')

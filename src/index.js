@@ -1,7 +1,7 @@
 import '../src/index.css';
 import { requestUserInfo, requestCards, updateProfile, postCard, updateAvatar } from './components/api.js';
 import { config, editBtn, addBtn, popups, popupTypeEdit, popupTypeNew, popupTypeImage, popupImage, popupTypeUpdateAvatar, popupCaption, profileImage, profileName, profileDescription, formEdit, nameInput, descriptionInput, formNew, placeName, placeLink, formUpdateAvatar, avatarLink } from './components/constants.js';
-import { createCard, addCard, deleteCard, likeCard } from './components/card.js';
+import { createCard, addCard, deleteCard, likeHandler } from './components/card.js';
 import { openPopup, closePopup, clickHandler } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
 
@@ -69,7 +69,7 @@ const formNewSubmitHandler = evt => {
         return Promise.reject();
       }
     })
-    .then(card => addCard(createCard(card, deleteCard, likeCard, showImg)))
+    .then(card => addCard(createCard(card, deleteCard, likeHandler, showImg, userId)))
     .then(() => closePopup(popupTypeNew))
     .then(() => formNew.reset())
     .catch(err => console.log(`Не удалось создать карточку: ${err}`))
@@ -111,7 +111,7 @@ const setUserInfo = (info) => {
 
 const initializeCards = cards => {
   cards.forEach(card => {
-    addCard((createCard(card, deleteCard, likeCard, showImg)))
+    addCard((createCard(card, deleteCard, likeHandler, showImg, userId)))
   })
 }
 

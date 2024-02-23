@@ -6,19 +6,19 @@ const apiConfig = {
   }
 }
 
-export const requestUserInfo = () => {
+const requestUserInfo = () => {
   return fetch(`${apiConfig.baseUrl}/users/me`, {
     headers: apiConfig.headers
   })
 }
 
-export const requestCards = () => {
+const requestCards = () => {
   return fetch(`${apiConfig.baseUrl}/cards`, {
     headers: apiConfig.headers
   })
 }
 
-export const updateProfile = (name, description) => {
+const updateProfile = (name, description) => {
   return fetch(`${apiConfig.baseUrl}/users/me`, {
     method: 'PATCH',
     headers: apiConfig.headers,
@@ -29,7 +29,7 @@ export const updateProfile = (name, description) => {
   })
 }
 
-export const postCard = (name, link) => {
+const postCard = (name, link) => {
   return fetch(`${apiConfig.baseUrl}/cards`, {
     method: 'POST',
     headers: apiConfig.headers,
@@ -40,7 +40,7 @@ export const postCard = (name, link) => {
   })
 }
 
-export const updateAvatar = (link) => {
+const updateAvatar = (link) => {
   return fetch(`${apiConfig.baseUrl}/users/me/avatar`, {
     method: 'PATCH',
     headers: apiConfig.headers,
@@ -49,3 +49,19 @@ export const updateAvatar = (link) => {
     })
   })
 }
+
+const postLike = (cardId) => {
+  return fetch(`${apiConfig.baseUrl}/cards/likes/${cardId}`, {
+    method: 'PUT',
+    headers: apiConfig.headers
+  })
+}
+
+const removeLike = (cardId) => {
+  return fetch(`${apiConfig.baseUrl}/cards/likes/${cardId}`, {
+    method: 'DELETE',
+    headers: apiConfig.headers
+  })
+}
+
+export { requestUserInfo, requestCards, updateProfile, postCard, updateAvatar, postLike, removeLike }

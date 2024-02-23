@@ -1,6 +1,6 @@
 # Проект Место
 
-## Ссылка на проект
+## Ссылка на страницу
 https://basicallyempty.github.io/mesto-project-ff/
 
 ## Функционал проекта

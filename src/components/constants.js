@@ -5,6 +5,7 @@ export const popupTypeEdit = document.querySelector('.popup_type_edit');
 export const popupTypeNew = document.querySelector('.popup_type_new-card');
 export const popupTypeImage = document.querySelector('.popup_type_image');
 export const popupTypeUpdateAvatar = document.querySelector('.popup_type_update-avatar');
+export const popupTypeConfirmDelete = document.querySelector('.popup_type_confirm-delete');
 export const popupImage = document.querySelector('.popup__image');
 export const popupCaption = document.querySelector('.popup__caption');
 export const profileImage = document.querySelector('.profile__image');
@@ -18,6 +19,7 @@ export const placeName = formNew.elements['place-name'];
 export const placeLink = formNew.elements.link;
 export const formUpdateAvatar = document.forms['update-avatar'];
 export const avatarLink = formUpdateAvatar.elements.link;
+export const confirmDeleteBtn = document.querySelector('.popup__confirm-button');
 
 export const config = {
   formSelector: '.popup__form',

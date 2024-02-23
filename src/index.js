@@ -1,11 +1,32 @@
 import '../src/index.css';
-import { requestUserInfo, requestCards, updateProfile, postCard, updateAvatar } from './components/api.js';
-import { config, editBtn, addBtn, popups, popupTypeEdit, popupTypeNew, popupTypeImage, popupImage, popupTypeUpdateAvatar, popupCaption, profileImage, profileName, profileDescription, formEdit, nameInput, descriptionInput, formNew, placeName, placeLink, formUpdateAvatar, avatarLink } from './components/constants.js';
-import { createCard, addCard, deleteCard, likeHandler } from './components/card.js';
+import { requestUserInfo, requestCards, updateProfile, postCard, updateAvatar, removeCard } from './components/api.js';
+import { config, editBtn, addBtn, popups, popupTypeEdit, popupTypeNew, popupTypeImage, popupImage, popupTypeUpdateAvatar, popupTypeConfirmDelete, popupCaption, profileImage, profileName, profileDescription, formEdit, nameInput, descriptionInput, formNew, placeName, placeLink, formUpdateAvatar, avatarLink, confirmDeleteBtn } from './components/constants.js';
+import { createCard, addCard, likeHandler } from './components/card.js';
 import { openPopup, closePopup, clickHandler } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
 
 let userId;
+
+const cardDeleteHandler = (cardInfo, cardElement) => {
+  const defaultMsg = 'Да';
+  const workingMsg = 'Удаление...';
+  openPopup(popupTypeConfirmDelete);
+  confirmDeleteBtn.addEventListener('click', (evt) => {
+    renderLoading(true, evt, defaultMsg, workingMsg);
+    removeCard(cardInfo._id)
+    .then(res => {
+      if (res.ok) {
+        return Promise.resolve();
+      } else {
+        return Promise.reject();
+      }
+    })
+    .then(() => cardElement.remove())
+    .then(() => closePopup(popupTypeConfirmDelete))
+    .catch(err => console.log(`Не удалось удалить карточку: ${err}`))
+    .finally(() => renderLoading(false, evt, defaultMsg, workingMsg))
+  })
+}
 
 editBtn.addEventListener('click', () => {
   clearValidation(formEdit, config);
@@ -28,18 +49,20 @@ popups.forEach(popup => {
   popup.addEventListener('click', (evt) => clickHandler(evt, popup))
 })
 
-function renderLoading(isLoading, evt) {
-  const button = evt.target.closest('form').querySelector('button');
-  if (isLoading) {
-    button.textContent = 'Сохранение...';
+function renderLoading(isWorking, evt, defaultMsg, workingMsg) {
+  const button = evt.target.closest('.popup__content').querySelector('.button');
+  if (isWorking) {
+    button.textContent = workingMsg;
   } else {
-    button.textContent = 'Сохранить';
+    button.textContent = defaultMsg;
   }
 }
 
 const formEditSubmitHandler = evt => {
   evt.preventDefault();
-  renderLoading(true, evt);
+  const defaultMsg = 'Сохранить';
+  const workingMsg = 'Сохранение...';
+  renderLoading(true, evt, defaultMsg, workingMsg);
   const name = nameInput.value;
   const description = descriptionInput.value;
   updateProfile(name, description)
@@ -53,12 +76,14 @@ const formEditSubmitHandler = evt => {
     .then(res => setUserInfo(res))
     .then(() => closePopup(popupTypeEdit))
     .catch(err => console.log(`Не удалось обновить данные профиля: ${err}`))
-    .finally(() => renderLoading(false, evt));
+    .finally(() => renderLoading(false, evt, defaultMsg, workingMsg));
 }
 
 const formNewSubmitHandler = evt => {
   evt.preventDefault();
-  renderLoading(true, evt);
+  const defaultMsg = 'Создать';
+  const workingMsg = 'Создание...';
+  renderLoading(true, evt, defaultMsg, workingMsg);
   const name = placeName.value;
   const link = placeLink.value;
   postCard(name, link)
@@ -69,16 +94,18 @@ const formNewSubmitHandler = evt => {
         return Promise.reject();
       }
     })
-    .then(card => addCard(createCard(card, deleteCard, likeHandler, showImg, userId)))
+    .then(card => addCard(createCard(card, cardDeleteHandler, likeHandler, showImg, userId)))
     .then(() => closePopup(popupTypeNew))
     .then(() => formNew.reset())
     .catch(err => console.log(`Не удалось создать карточку: ${err}`))
-    .finally(() => renderLoading(false, evt));
+    .finally(() => renderLoading(false, evt, defaultMsg, workingMsg));
 }
 
 const formUpdateAvatarSubmitHandler = evt => {
   evt.preventDefault();
-  renderLoading(true, evt);
+  const defaultMsg = 'Сохранить';
+  const workingMsg = 'Сохранение...';
+  renderLoading(true, evt, defaultMsg, workingMsg);
   const link = avatarLink.value;
   updateAvatar(link)
     .then(res => {
@@ -92,7 +119,7 @@ const formUpdateAvatarSubmitHandler = evt => {
     .then(() => closePopup(popupTypeUpdateAvatar))
     .then(() => formUpdateAvatar.reset())
     .catch(err => console.log(`Не удалось обновить аватар: ${err}`))
-    .finally(() => renderLoading(false, evt));
+    .finally(() => renderLoading(false, evt, defaultMsg, workingMsg));
 }
 
 const showImg = (name, link) => {
@@ -111,7 +138,7 @@ const setUserInfo = (info) => {
 
 const initializeCards = cards => {
   cards.forEach(card => {
-    addCard((createCard(card, deleteCard, likeHandler, showImg, userId)))
+    addCard((createCard(card, cardDeleteHandler, likeHandler, showImg, userId)))
   })
 }
 

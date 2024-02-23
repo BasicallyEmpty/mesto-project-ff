@@ -1,6 +1,6 @@
 const keyHandler = evt => {
-  const activePopup = document.querySelector('.popup_is-opened');
   if (evt.key === 'Escape') {
+    const activePopup = document.querySelector('.popup_is-opened');
     closePopup(activePopup)
   }
 }

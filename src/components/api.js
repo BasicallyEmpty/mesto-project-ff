@@ -1,3 +1,9 @@
+import { checkResponse } from "./utils"
+
+const request = (url, options) => {
+  return fetch(url, options).then(checkResponse)
+}
+
 const apiConfig = {
   baseUrl: 'https://nomoreparties.co/v1/wff-cohort-6',
   headers: {
@@ -19,7 +25,7 @@ const requestCards = () => {
 }
 
 const updateProfile = (name, description) => {
-  return fetch(`${apiConfig.baseUrl}/users/me`, {
+  return request(`${apiConfig.baseUrl}/users/me`, {
     method: 'PATCH',
     headers: apiConfig.headers,
     body: JSON.stringify({
@@ -30,7 +36,7 @@ const updateProfile = (name, description) => {
 }
 
 const postCard = (name, link) => {
-  return fetch(`${apiConfig.baseUrl}/cards`, {
+  return request(`${apiConfig.baseUrl}/cards`, {
     method: 'POST',
     headers: apiConfig.headers,
     body: JSON.stringify({
@@ -41,14 +47,14 @@ const postCard = (name, link) => {
 }
 
 const removeCard = (cardId) => {
-  return fetch(`${apiConfig.baseUrl}/cards/${cardId}`, {
+  return request(`${apiConfig.baseUrl}/cards/${cardId}`, {
     method: 'DELETE',
     headers: apiConfig.headers
   })
 }
 
 const updateAvatar = (link) => {
-  return fetch(`${apiConfig.baseUrl}/users/me/avatar`, {
+  return request(`${apiConfig.baseUrl}/users/me/avatar`, {
     method: 'PATCH',
     headers: apiConfig.headers,
     body: JSON.stringify({
@@ -58,17 +64,17 @@ const updateAvatar = (link) => {
 }
 
 const postLike = (cardId) => {
-  return fetch(`${apiConfig.baseUrl}/cards/likes/${cardId}`, {
+  return request(`${apiConfig.baseUrl}/cards/likes/${cardId}`, {
     method: 'PUT',
     headers: apiConfig.headers
   })
 }
 
 const removeLike = (cardId) => {
-  return fetch(`${apiConfig.baseUrl}/cards/likes/${cardId}`, {
+  return request(`${apiConfig.baseUrl}/cards/likes/${cardId}`, {
     method: 'DELETE',
     headers: apiConfig.headers
   })
 }
 
-export { requestUserInfo, requestCards, updateProfile, postCard, removeCard, updateAvatar, postLike, removeLike }
+export { request, requestUserInfo, requestCards, updateProfile, postCard, removeCard, updateAvatar, postLike, removeLike }

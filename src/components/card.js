@@ -7,43 +7,27 @@ const hasOwnLike = (cardInfo, userId) => {
   return likesArr.some(element => element._id === userId);
 }
 
-const likeCard = (evt, cardInfo) => {
-  const likeCounter = evt.target.closest('.card__like-container').querySelector('.card__like-counter')
+const likeCard = (evt, cardInfo, likeCounter) => {
   postLike(cardInfo._id)
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return Promise.reject();
-      }
-    })
     .then((res) => cardInfo.likes = res.likes)
     .then((res) => likeCounter.textContent = res.length)
     .then(() => evt.target.classList.add('card__like-button_is-active'))
     .catch(err => console.log(`Не удалось поставить лайк: ${err}`))
 }
 
-const unlikeCard = (evt, cardInfo) => {
-  const likeCounter = evt.target.closest('.card__like-container').querySelector('.card__like-counter')
+const unlikeCard = (evt, cardInfo, likeCounter) => {
   removeLike(cardInfo._id)
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return Promise.reject();
-      }
-    })
     .then((res) => cardInfo.likes = res.likes)
     .then((res) => likeCounter.textContent = res.length)
     .then(() => evt.target.classList.remove('card__like-button_is-active'))
     .catch(err => console.log(`Не удалось убрать лайк: ${err}`))
 }
 
-const likeHandler = (evt, cardInfo, userId) => {
+const likeHandler = (evt, cardInfo, userId, likeCounter) => {
   if (hasOwnLike(cardInfo, userId)) {
-    unlikeCard(evt, cardInfo)
+    unlikeCard(evt, cardInfo, likeCounter)
   } else {
-    likeCard(evt, cardInfo)
+    likeCard(evt, cardInfo, likeCounter)
   }
 }
 
@@ -66,7 +50,7 @@ const createCard = (cardInfo, deleteCallback, likeCallback, showImgCallback, use
   likeCounter.textContent = cardInfo.likes.length;
 
   cardImg.addEventListener('click', () => showImgCallback(cardTitle.textContent, cardImg.src));
-  likeBtn.addEventListener('click', (evt) => likeCallback(evt, cardInfo, userId));
+  likeBtn.addEventListener('click', (evt) => likeCallback(evt, cardInfo, userId, likeCounter));
   deleteBtn.addEventListener('click', () => deleteCallback(cardInfo, cardElement));
 
   if (cardInfo.owner._id !== userId) {
@@ -74,7 +58,7 @@ const createCard = (cardInfo, deleteCallback, likeCallback, showImgCallback, use
   }
 
   if (hasOwnLike(cardInfo, userId)) {
-    likeBtn.classList.add('card__like-button_is-active')
+    likeBtn.classList.add('card__like-button_is-active');
   }
 
   return cardElement;

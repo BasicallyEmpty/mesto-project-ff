@@ -19,7 +19,7 @@ export const placeName = formNew.elements['place-name'];
 export const placeLink = formNew.elements.link;
 export const formUpdateAvatar = document.forms['update-avatar'];
 export const avatarLink = formUpdateAvatar.elements.link;
-export const confirmDeleteBtn = document.querySelector('.popup__confirm-button');
+export const formConfirmDelete = document.forms['confirm-delete'];
 
 export const config = {
   formSelector: '.popup__form',

@@ -51,19 +51,6 @@ const addCard = card => {
   placesList.prepend(card);
 }
 
-const deleteCard = (cardInfo, cardElement) => {
-  removeCard(cardInfo._id)
-    .then(res => {
-      if (res.ok) {
-        return Promise.resolve();
-      } else {
-        return Promise.reject();
-      }
-    })
-    .then(() => cardElement.remove())
-    .catch(err => console.log(`Не удалось удалить карточку: ${err}`))
-}
-
 const createCard = (cardInfo, deleteCallback, likeCallback, showImgCallback, userId) => {
   const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
@@ -93,4 +80,4 @@ const createCard = (cardInfo, deleteCallback, likeCallback, showImgCallback, use
   return cardElement;
 }
 
-export { createCard, addCard, deleteCard, likeHandler, hasOwnLike }
+export { createCard, addCard, likeHandler, hasOwnLike }

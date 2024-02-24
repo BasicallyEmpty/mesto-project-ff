@@ -101,32 +101,12 @@ const initializeCards = cards => {
   })
 }
 
-const getUserInfo = new Promise((resolve, reject) => {
-  requestUserInfo()
-    .then(res => {
-      if (res.ok) {
-        resolve(res.json());
-      }
-      reject(`Ошибка: ${res.status}`);
-    })
-})
-
-const getCards = new Promise((resolve, reject) => {
-  requestCards()
-    .then(res => {
-      if (res.ok) {
-        resolve(res.json());
-      }
-      reject(`Ошибка: ${res.status}`);
-    })
-})
-
 formEdit.addEventListener('submit', formEditSubmitHandler);
 formNew.addEventListener('submit', formNewSubmitHandler);
 formUpdateAvatar.addEventListener('submit', formUpdateAvatarSubmitHandler);
 formConfirmDelete.addEventListener('submit', cardDeleteHandler);
 
-Promise.all([getUserInfo, getCards])
+Promise.all([requestUserInfo(), requestCards()])
   .then(([userData, cards]) => {
     setUserInfo(userData);
     initializeCards(cards);

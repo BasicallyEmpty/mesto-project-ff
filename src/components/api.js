@@ -13,13 +13,13 @@ const apiConfig = {
 }
 
 const requestUserInfo = () => {
-  return fetch(`${apiConfig.baseUrl}/users/me`, {
+  return request(`${apiConfig.baseUrl}/users/me`, {
     headers: apiConfig.headers
   })
 }
 
 const requestCards = () => {
-  return fetch(`${apiConfig.baseUrl}/cards`, {
+  return request(`${apiConfig.baseUrl}/cards`, {
     headers: apiConfig.headers
   })
 }
